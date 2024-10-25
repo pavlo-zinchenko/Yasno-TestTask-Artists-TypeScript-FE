@@ -2,7 +2,7 @@ import { Card, CardContent, Avatar, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setArtist } from '@slices/artistsSlice';
 import { useNavigate } from 'react-router-dom';
-import { baseURL } from '@constants/api';
+import { baseURL } from '@constants';
 
 export default function ArtistCard({ artist }) {
   const dispatch = useDispatch();

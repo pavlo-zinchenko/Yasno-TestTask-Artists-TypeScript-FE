@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { fetchFavouritesSongs, setFavouritesPage } from '@slices/favouritesSlice';
 import SongCard from '@components/Song/Card';
 import Pagination from '@components/Pagination';
-import { SONGS_PER_PAGE } from '@constants/api';
+import { SONGS_PER_PAGE } from '@constants';
 
 export default function FavouritesPage() {
   const dispatch = useDispatch();

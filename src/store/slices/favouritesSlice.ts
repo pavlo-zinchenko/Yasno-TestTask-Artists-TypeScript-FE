@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getFavourites, addFavourite, removeFavourite, getFavouritesPagination } from '@services/FavouriteService';
-import { SONGS_PER_PAGE } from '@constants/api';
+import { SONGS_PER_PAGE } from '@constants';
 
 export const loadFavouritesFromStorage = () => {
   const storedFavourites = localStorage.getItem('favouriteSongs');

@@ -5,7 +5,7 @@ import AudioPlayer from 'react-h5-audio-player';
 import Container from './Container';
 import Cover from './Cover';
 import Details from './Details';
-import { baseURL } from '@constants/api';
+import { baseURL } from '@constants';
 
 export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId }) {
   const song = {

@@ -1,6 +1,6 @@
 import axiosInstance from './api';
 import { notifyError } from '@utils/ToastNotifications';
-import { CHUNK_SIZE } from '@constants/api';
+import { CHUNK_SIZE } from '@constants';
 
 const downloadChunk = async (url, artistId, start, end) => {
   try {

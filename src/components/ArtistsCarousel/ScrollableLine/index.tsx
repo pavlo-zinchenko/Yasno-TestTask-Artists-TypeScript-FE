@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, CardMedia } from '@mui/material';
 import CustomCard from '@common/CustomCard';
-import { baseURL } from '@constants/api';
+import { baseURL } from '@constants';
 
 const baseAvatarUrl = `${baseURL}/uploads/avatars/`;
 

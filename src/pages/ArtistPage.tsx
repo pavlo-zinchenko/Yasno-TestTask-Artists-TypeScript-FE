@@ -7,7 +7,7 @@ import { setPage, fetchArtistSongs } from '@slices/songsSlice';
 import Progress from '@common/Progress';
 import Pagination from '@components/Pagination';
 import SongsList from '../components/Song/List';
-import { baseURL } from '@constants/api';
+import { baseURL } from '@constants';
 
 export default function ArtistPage() {
   const { artistId } = useParams();

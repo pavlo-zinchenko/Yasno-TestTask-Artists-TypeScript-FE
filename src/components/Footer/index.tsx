@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-export default function Footer() {
+export default function Footer(): JSX.Element {
   return (
     <Box
       component="footer"

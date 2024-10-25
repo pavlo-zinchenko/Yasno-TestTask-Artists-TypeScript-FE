@@ -1,7 +1,7 @@
 import { Box, Card, Typography } from '@mui/material';
-import { FEATURES } from '@constants/features';
+import { FEATURES, Feature } from '@constants';
 
-export default function Features() {
+export default function Features(): JSX.Element {
   return (
     <Box sx={{ textAlign: 'center', mb: 2 }}>
       <Typography
@@ -19,7 +19,7 @@ export default function Features() {
             alignItems: 'center',
           }}
         >
-          {FEATURES.map((feature, index) => (
+          {FEATURES.map((feature: Feature, index) => (
             <Card
               key={index}
               sx={{

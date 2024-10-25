@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getArtistSongs } from '@services/ArtistService';
 import { notifyError } from '@utils/ToastNotifications';
-import { SONGS_PER_PAGE } from '@constants/api';
+import { SONGS_PER_PAGE } from '@constants';
 
 const initialState = {
   songs: [],

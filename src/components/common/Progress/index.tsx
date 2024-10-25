@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from '@mui/material';
 
-export default function Progress() {
+export default function Progress(): JSX.Element {
   return (
     <Box
       sx={{

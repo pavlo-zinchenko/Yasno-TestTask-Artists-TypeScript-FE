@@ -5,17 +5,18 @@ import { Box, Typography, IconButton, Button, Badge } from '@mui/material';
 import { ArrowBack, Brightness4, Brightness7, Favorite } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { toggleTheme } from '@slices/themeSlice';
+import { RootState } from '@store/types';
 
 export default function Header() {
-  const [headerTitle, setHeaderTitle] = useState('Music App');
-  const [isReturnButton, setIsReturnButton] = useState(false);
+  const [headerTitle, setHeaderTitle] = useState<string>('Music App');
+  const [isReturnButton, setIsReturnButton] = useState<boolean>(false);
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const favoriteCount = useSelector((state) => state.favourites?.favouriteSongs?.length);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const favoriteCount = useSelector((state: RootState) => state.favourites?.favouriteSongs?.length);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -63,7 +64,7 @@ export default function Header() {
     window.location.href = '/';
   };
 
-  const navigateTo = (url) => {
+  const navigateTo = (url: string) => {
     if (location.pathname === url) {
       navigate(url, { replace: true });
     } else {
@@ -95,20 +96,20 @@ export default function Header() {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton onClick={() => navigateTo('/favourites')} sx={{ color: 'white', ml: 1, mr: 1, }}>
+        <IconButton onClick={() => navigateTo('/favourites')} sx={{ color: 'white', ml: 1, mr: 1 }}>
           <Badge badgeContent={favoriteCount} color="error">
             <Favorite />
           </Badge>
         </IconButton>
 
         <IconButton
-          sx={{ color: 'white', ml: 1, mr: 1, }}
+          sx={{ color: 'white', ml: 1, mr: 1 }} 
           aria-label="toggle theme"
           onClick={() => dispatch(toggleTheme())}
         >
           {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
         </IconButton>
-        
+
         {!isAuthenticated ? (
           <>
             <Button color="inherit" onClick={() => navigateTo('/login')}>

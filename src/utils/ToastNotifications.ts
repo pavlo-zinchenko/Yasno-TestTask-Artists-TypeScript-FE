@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { autoClose } from '@constants/toast';
+import { autoClose } from '@constants';
 
 let primaryColor = '#1976d2';
 let secondaryColor = 'black';

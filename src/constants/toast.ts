@@ -1,1 +1,1 @@
-export const autoClose = 5000;
+export const autoClose: number = 5000;
