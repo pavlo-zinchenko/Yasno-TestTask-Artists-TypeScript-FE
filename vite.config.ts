@@ -10,6 +10,7 @@ export default defineConfig({
 			'@common': path.resolve(__dirname, './src/components/common'),
 			'@components': path.resolve(__dirname, './src/components'),
 			'@constants': path.resolve(__dirname, './src/constants/index.ts'),
+			'@enums': path.resolve(__dirname, './src/enums/index.ts'),
 			'@interfaces': path.resolve(__dirname, './src/interfaces/index.ts'),
 			'@pages': path.resolve(__dirname, './src/pages'),
 			'@services': path.resolve(__dirname, './src/services'),

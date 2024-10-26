@@ -32,6 +32,9 @@
       "@constants": [
         "src/constants/index.ts"
       ],
+      "@enums": [
+        "src/enums/index.ts"
+      ],
       "@interfaces": [
         "src/interfaces/index.ts"
       ],

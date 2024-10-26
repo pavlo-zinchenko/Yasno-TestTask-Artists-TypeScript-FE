@@ -5,7 +5,7 @@ import { Box, Typography, IconButton, Button, Badge } from '@mui/material';
 import { ArrowBack, Brightness4, Brightness7, Favorite } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { toggleTheme } from '@slices/themeSlice';
-import { RootState } from '@store/types';
+import { RootState } from '@store/index';
 
 export default function Header() {
   const [headerTitle, setHeaderTitle] = useState<string>('Music App');
