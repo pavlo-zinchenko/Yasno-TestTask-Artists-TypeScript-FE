@@ -3,12 +3,12 @@ import { IconButton } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { toggleFavourite } from '@slices/favouritesSlice';
 
-export default function AddFavourite({ id }) {
+export default function AddFavourite({ song }) {
   const dispatch = useDispatch();
-  const isFavorited = useSelector((state) => state.favourites.favouriteSongs.map((song) => song.id).includes(id));
+  const isFavorited = useSelector((state) => state.favourites.favouriteSongs.map((favSong) => favSong.id).includes(song.id));
 
   function handleFavourite() {
-    dispatch(toggleFavourite(id));
+    dispatch(toggleFavourite(song));
   }
 
   return (

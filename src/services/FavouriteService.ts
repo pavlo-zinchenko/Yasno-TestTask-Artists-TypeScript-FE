@@ -2,17 +2,18 @@ import axiosInstance from './api';
 import { executeRequest } from '@utils/executeRequest';
 import { SONGS_PER_PAGE } from '@constants';
 import { Song } from '@interfaces';
+import { loadFavouritesFromStorage } from '@store/slices/favouritesSlice';
 
 export const getFavourites = async (): Promise<Song[]> => {
-    const response = await executeRequest(() => axiosInstance.get<{ favouriteSongs: Song[] }>('/favourites'));
+    const response = await executeRequest(() => axiosInstance.get('/favourites'));
     return response.favouriteSongs;
 };
 
 export const getFavouritesPagination = async (
     page = 1,
     limit = SONGS_PER_PAGE
-): Promise<{ songs: Song[]; totalPages: number }> => {
-    const favouriteSongs: { id: number }[] = JSON.parse(localStorage.getItem('favouriteSongs') || '[]');
+): Promise<Song[]> => {
+    const favouriteSongs: Song[] = loadFavouritesFromStorage();
     const ids: number[] = favouriteSongs.map((favSong) => favSong.id) || [];
     return await executeRequest(() =>
         axiosInstance.post('/favourites/pagination', {

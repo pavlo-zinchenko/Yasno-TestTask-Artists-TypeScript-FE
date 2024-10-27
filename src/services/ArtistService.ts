@@ -1,10 +1,10 @@
 import axiosInstance from './api';
 import { executeRequest } from '@utils/executeRequest';
 import { SONGS_PER_PAGE } from '@constants';
-import { Artist, ArtistSongsResponse } from '@interfaces';
+import { Artist, ArtistSongsResponse, Song } from '@interfaces';
 
 export const getArtists = async (): Promise<Artist[]> => {
-    const favouriteSongs: { id: number }[] = JSON.parse(localStorage.getItem('favouriteSongs') || '[]');
+    const favouriteSongs: Song[] = JSON.parse(localStorage.getItem('favouriteSongs') || '[]');
     const ids: number[] = favouriteSongs.map((favSong) => favSong.id) || [];
     return await executeRequest(() =>
         axiosInstance.post('/artists', {

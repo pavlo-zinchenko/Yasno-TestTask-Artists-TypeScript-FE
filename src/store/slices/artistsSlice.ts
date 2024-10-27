@@ -1,8 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getArtists, getArtist } from '@services/ArtistService';
 import { notifyError } from '@utils/ToastNotifications';
+import { Artist, ArtistsState } from '@interfaces';
+import { AppDispatch, RootState } from '@store/index';
 
-const initialState = {
+const initialState: ArtistsState = {
   artists: [],
   selectedArtist: null,
   loading: false,
@@ -15,11 +17,11 @@ export const artistsSlice = createSlice({
     setLoading: (state) => {
       state.loading = true;
     },
-    setArtist: (state, action) => {
+    setArtist: (state, action: PayloadAction<Artist>) => {
       state.selectedArtist = action.payload;
       state.loading = false;
     },
-    setArtists: (state, action) => {
+    setArtists: (state, action: PayloadAction<Artist[]>) => {
       state.artists = action.payload;
       state.loading = false;
     },
@@ -27,7 +29,7 @@ export const artistsSlice = createSlice({
       state.selectedArtist = null;
     },
     clearArtists: (state) => {
-      state.selectedArtist = null;
+      state.artists = [];
     },
   },
 });
@@ -36,50 +38,47 @@ export const {
   setLoading,
   setArtist,
   setArtists,
-  setFailure,
   clearArtist,
   clearArtists,
 } = artistsSlice.actions;
 
-export const fetchArtists = () => async (dispatch, getState) => {
-  const { artists } = getState().artists;
+export const fetchArtists = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const artistsSlice: ArtistsState = getState().artists;
+  const artists: Artist[] = artistsSlice.artists;
 
-  if (artists.length > 0) {
-    return;
-  }
+  if (artists.length > 0) return;
 
   dispatch(setLoading());
 
   try {
-    const response = await getArtists();
+    const response: Artist[] = await getArtists();
     dispatch(setArtists(response));
   } catch (error) {
     notifyError('Failed to load artists');
   }
 };
 
-export const fetchArtist = (artistId) => async (dispatch, getState) => {
-  const { artist } = getState().artists;
+export const fetchArtist = (artistId: number) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const artistsSlice: ArtistsState = getState().artists;
+  const selectedArtist: Artist | null = artistsSlice.selectedArtist;
 
-  if (artist && artist.id === artistId) {
-    return;
-  }
+  if (selectedArtist && selectedArtist.id === artistId) return;
 
   dispatch(setLoading());
 
   try {
-    const response = await getArtist(artistId);
+    const response: Artist = await getArtist(artistId);
     dispatch(setArtist(response));
   } catch (error) {
     notifyError('Failed to load artist details');
   }
 };
 
-export const clearSelectedArtist = () => (dispatch) => {
+export const clearSelectedArtist = () => (dispatch: AppDispatch) => {
   dispatch(clearArtist());
 };
 
-export const clearSelectedArtists = () => (dispatch) => {
+export const clearSelectedArtists = () => (dispatch: AppDispatch) => {
   dispatch(clearArtists());
 };
 

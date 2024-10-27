@@ -1,5 +1,7 @@
+import { Song } from '@interfaces';
+
 export interface FavouritesState {
-    favouriteSongs: number[];
+    favouriteSongs: Song[];
     page: number;
     totalPages: number;
 }

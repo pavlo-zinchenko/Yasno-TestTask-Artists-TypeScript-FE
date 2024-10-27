@@ -6,7 +6,7 @@ export default function Actions({ song }) {
   return (
     <SActionsContainer>
       <Download {...song} />
-      <AddFavourite id={song.id} />
+      <AddFavourite song={song} />
     </SActionsContainer>
   );
 }

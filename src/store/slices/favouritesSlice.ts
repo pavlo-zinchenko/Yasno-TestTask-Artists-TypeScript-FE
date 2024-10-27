@@ -1,78 +1,79 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getFavourites, addFavourite, removeFavourite, getFavouritesPagination } from '@services/FavouriteService';
 import { SONGS_PER_PAGE } from '@constants';
+import { Song, FavouritesState } from '@interfaces';
+import { AppDispatch } from '@store/index';
 
-export const loadFavouritesFromStorage = () => {
-  const storedFavourites = localStorage.getItem('favouriteSongs');
-  return storedFavourites ? JSON.parse(storedFavourites) : [];
+const initialState: FavouritesState = {
+  favouriteSongs: [],
+  page: 1,
+  totalPages: 1,
 };
 
-export const loadFavourites = async (isAuthenticated, dispatch) => {
+const saveFavSongsToLocaleStorage = (songs: Song[]): void => {
+  localStorage.setItem('favouriteSongs', JSON.stringify(songs));
+}
+
+export const loadFavouritesFromStorage = (): Song[] => {
+  const storedFavourites: string | null = localStorage.getItem('favouriteSongs');
+  const parsedFavourites: Song[] = storedFavourites ? JSON.parse(storedFavourites) : [];
+  return parsedFavourites.filter((song) => song !== null);
+};
+
+export const loadFavourites = async (isAuthenticated: boolean, dispatch: AppDispatch): Promise<void> => {
   if (!isAuthenticated) {
-    const storageFavourites = loadFavouritesFromStorage();
+    const storageFavourites: Song[] = loadFavouritesFromStorage();
     dispatch(loadFavouritesSuccess(storageFavourites));
     return;
   }
 
   try {
-    const data = await getFavourites();
-    if (data && data.length > 0) {
-      dispatch(loadFavouritesSuccess(data));
-    } else {
-      const storageFavourites = loadFavouritesFromStorage();
-      dispatch(loadFavouritesSuccess(storageFavourites));
-    }
+    const data: Song[] = await getFavourites();
+    dispatch(loadFavouritesSuccess(data.length > 0 ? data : loadFavouritesFromStorage()));
   } catch (error) {
-    const storageFavourites = loadFavouritesFromStorage();
-    dispatch(loadFavouritesSuccess(storageFavourites));
+    dispatch(loadFavouritesSuccess(loadFavouritesFromStorage()));
   }
-};
-
-const initialState = {
-  favouriteSongs: [],
-  page: 1,
-  totalPages: 1,
 };
 
 export const favouritesSlice = createSlice({
   name: 'favourites',
   initialState,
   reducers: {
-    toggleFavourite: (state, action) => {
-      const songId = action.payload;
-      const isAuthenticated = Boolean(localStorage.getItem('token'));
-
-      const isSongInFavourites = state.favouriteSongs?.map((favSong) => favSong.id).includes(songId);
+    toggleFavourite: (state: FavouritesState, action: PayloadAction<Song>): void => {
+      const song: Song = action.payload;
+      const songId: number = song.id;
+      const isAuthenticated: boolean = Boolean(localStorage.getItem('token'));
+      const isSongInFavourites: boolean = state.favouriteSongs.some((favSong: Song) => favSong.id === songId);
 
       if (isSongInFavourites) {
-        state.favouriteSongs = state.favouriteSongs?.filter((favSong) => favSong.id !== songId);
+        state.favouriteSongs = state.favouriteSongs.filter((favSong: Song) => favSong.id !== songId);
+
         if (isAuthenticated) {
           removeFavourite(songId);
-          const newTotal = Math.ceil((state.favouriteSongs.length - 1) / SONGS_PER_PAGE);
-          state.totalPages = newTotal;
-
-          if (state.page > newTotal) {
-            state.page = state.page - 1;
-          }
         }
       } else {
-        state.favouriteSongs.push({ id: songId });
+        state.favouriteSongs.push(song);
+
         if (isAuthenticated) {
           addFavourite(songId);
-          state.totalPages = Math.ceil((state.favouriteSongs.length + 1) / SONGS_PER_PAGE);
         }
       }
 
-      localStorage.setItem('favouriteSongs', JSON.stringify(state.favouriteSongs));
+      state.totalPages = Math.ceil(state.favouriteSongs.length / SONGS_PER_PAGE);
+      if (state.page > state.totalPages) state.page -= 1;
+      saveFavSongsToLocaleStorage(state.favouriteSongs);
     },
-    loadFavouritesSuccess: (state, action) => {
+
+    loadFavouritesSuccess: (state: FavouritesState, action: PayloadAction<Song[]>): void => {
       state.favouriteSongs = action.payload;
-      localStorage.setItem('favouriteSongs', JSON.stringify(state.favouriteSongs));
+      saveFavSongsToLocaleStorage(state.favouriteSongs);
     },
-    setFavouritesPage: (state, action) => {
+
+    setFavouritesPage: (state: FavouritesState, action: PayloadAction<number>): void => {
       state.page = action.payload;
     },
-    setFavouritesTotalPages: (state, action) => {
+
+    setFavouritesTotalPages: (state: FavouritesState, action: PayloadAction<number>): void => {
       state.totalPages = action.payload;
     },
   },
@@ -84,16 +85,16 @@ export const {
   setFavouritesPage,
   setFavouritesTotalPages
 } = favouritesSlice.actions;
+
 export default favouritesSlice.reducer;
 
-export const fetchFavouritesSongs = (page = 1) => async (dispatch) => {
+export const fetchFavouritesSongs = (page: number = 1) => async (dispatch: AppDispatch): Promise<void> => {
   try {
-    const offset = (page - 1) * SONGS_PER_PAGE;
-
-    const data = await getFavouritesPagination(SONGS_PER_PAGE, offset);
-    const count = data.length;
-    dispatch(loadFavouritesSuccess(data));
-    dispatch(setFavouritesTotalPages(Math.ceil(count / SONGS_PER_PAGE)));
+    const offset: number = (page - 1) * SONGS_PER_PAGE;
+    const songs: Song[] = await getFavouritesPagination(SONGS_PER_PAGE, offset);
+    const totalPages: number = Math.ceil(songs.length / SONGS_PER_PAGE);
+    dispatch(loadFavouritesSuccess(songs));
+    dispatch(setFavouritesTotalPages(totalPages));
   } catch (error) {
     console.error('Error fetching favourite songs:', error);
   }
