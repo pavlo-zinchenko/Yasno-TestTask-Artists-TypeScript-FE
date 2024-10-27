@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
+import { NewUserInfo } from '@interfaces';
 
-const registrationValidationSchema = Yup.object().shape({
+const registrationValidationSchema: Yup.Schema<NewUserInfo> = Yup.object().shape({
     name: Yup.string()
         .min(3, 'Name must be at least 3 characters')
         .required('Name is required'),
