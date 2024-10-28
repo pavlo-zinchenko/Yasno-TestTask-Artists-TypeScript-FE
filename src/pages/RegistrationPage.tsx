@@ -1,15 +1,16 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { TextField, Button, Container, Box, Typography } from '@mui/material';
 import { register } from '@services/AuthService';
 import CustomContainer from '@common/CustomContainer';
 import registrationValidationSchema from '@validations/registrationValidation';
+import { NewUserInfo } from '@interfaces';
 
 export default function RegistrationPage() {
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values: NewUserInfo, { setSubmitting }: FormikHelpers<NewUserInfo>) => {
     try {
       const { user, token } = await register(values);
       localStorage.removeItem('favouriteSongs');
-      localStorage.setItem('user_id', user.id);
+      localStorage.setItem('user_id', user.id.toString());
       localStorage.setItem('token', token);
       window.location.href = '/';
     } finally {

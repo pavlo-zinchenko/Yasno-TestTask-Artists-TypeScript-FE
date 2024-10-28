@@ -4,26 +4,27 @@ import { useSelector } from 'react-redux';
 import { Box, CardMedia } from '@mui/material';
 import CustomCard from '@common/CustomCard';
 import { baseURL } from '@constants';
+import { RootState } from '@store/index';
+import { Artist } from '@interfaces';
 
 const baseAvatarUrl = `${baseURL}/uploads/avatars/`;
 
 export default function ScrollableLine() {
-  const lineRef = useRef(null);
-  const artists = useSelector((state) => state.artists.artists);
+  const lineRef = useRef<HTMLDivElement | null>(null);
+  const artists = useSelector((state: RootState) => state.artists.artists);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!artists.length) return;
 
-    let animationFrameId;
+    let animationFrameId: number;
 
     const smoothScroll = () => {
       if (lineRef.current && artists.length > 1) {
         lineRef.current.scrollLeft += 1;
 
-        const firstChild = lineRef.current.firstChild;
+        const firstChild = lineRef.current.firstChild as HTMLDivElement;
         const firstChildWidth = firstChild.getBoundingClientRect().width;
-
         const gap = parseFloat(getComputedStyle(lineRef.current).gap) || 0;
 
         if (lineRef.current.scrollLeft >= firstChildWidth + gap) {
@@ -54,7 +55,7 @@ export default function ScrollableLine() {
         maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
       }}
     >
-      {artists.map((artist, index) => (
+      {artists.map((artist: Artist, index: number) => (
         <CustomCard
           key={`${artist.id}-${index}`}
           onClick={() => navigate(`/artists/${artist.id}`)}

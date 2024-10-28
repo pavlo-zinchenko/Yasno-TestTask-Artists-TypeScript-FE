@@ -1,7 +1,5 @@
-import { Song } from '@interfaces';
+import { ArtistSongsResponse } from '@interfaces';
 
-export interface FavouritesState {
-    favouriteSongs: Song[];
+export interface FavouritesState extends ArtistSongsResponse {
     page: number;
-    totalPages: number;
 }

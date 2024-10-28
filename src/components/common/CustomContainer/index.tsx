@@ -1,11 +1,7 @@
 import { Box } from '@mui/material';
-import { ReactNode } from 'react';
+import { ChildrenProps } from '@interfaces';
 
-interface ContainerProps {
-  children: ReactNode;
-}
-
-export default function Container({ children }: ContainerProps): JSX.Element {
+export default function Container({ children }: ChildrenProps) {
   return (
     <Box
       sx={{

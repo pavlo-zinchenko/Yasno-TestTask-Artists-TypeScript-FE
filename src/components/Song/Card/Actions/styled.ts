@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Box } from '@mui/material';
+import styled from '@mui/material/styles/styled';
+import Box from '@mui/material/Box';
 
 const SActionsContainer = styled(Box)(() => ({
     position: 'absolute',
@@ -8,7 +8,7 @@ const SActionsContainer = styled(Box)(() => ({
     padding: 0,
     width: '100%',
     display: 'flex',
-    direction: 'row',
+    flexDirection: 'row',
     justifyContent: 'space-between',
 }));
 

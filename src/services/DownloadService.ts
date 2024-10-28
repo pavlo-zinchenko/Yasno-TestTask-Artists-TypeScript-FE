@@ -1,7 +1,8 @@
 import axiosInstance from './api';
 import { notifyError } from '@utils/ToastNotifications';
 import { CHUNK_SIZE } from '@constants';
-import { DownloadChunkResponse, HttpHeaders } from '@interfaces';
+import { DownloadChunkResponse } from '@interfaces';
+import { HttpHeaders } from '@types';
 
 function sanitizeHeaders(headers: any): HttpHeaders {
   const sanitizedHeaders: HttpHeaders = {};
@@ -35,7 +36,7 @@ const downloadChunk = async (
   }
 };
 
-export const downloadFile = async (url: string, name: string, artist_id: string): Promise<void> => {
+export const downloadFile = async (url: string, name: string, artist_id: number): Promise<void> => {
   try {
     const artistId: string = encodeURIComponent(artist_id);
     const downloadUrl: string = url.replace('uploads', 'downloads');

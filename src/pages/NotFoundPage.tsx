@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
-
 import { Typography, Button } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-
 import CustomContainer from '@common/CustomContainer';
 
 export default function NotFoundPage() {

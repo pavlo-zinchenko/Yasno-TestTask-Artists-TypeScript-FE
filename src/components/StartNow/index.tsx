@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button } from '@mui/material';
 
-export default function StartNow(): JSX.Element {
+export default function StartNow() {
   const navigate = useNavigate();
 
   return (

@@ -1,15 +1,16 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { TextField, Button, Container, Box, Typography } from '@mui/material';
 import { login } from '@services/AuthService';
 import CustomContainer from '@common/CustomContainer';
 import loginValidationSchema from '@validations/loginValidation';
+import { AuthResponse, Credentials } from '@interfaces';
 
 export default function LoginPage() {
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values: Credentials, { setSubmitting }: FormikHelpers<Credentials>) => {
     try {
-      const { user, token } = await login(values);
+      const { user, token }: AuthResponse = await login(values);
       localStorage.removeItem('favouriteSongs');
-      localStorage.setItem('user_id', user.id);
+      localStorage.setItem('user_id', user.id.toString());
       localStorage.setItem('token', token);
       window.location.href = '/';
     } finally {

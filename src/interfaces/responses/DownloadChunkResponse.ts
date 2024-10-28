@@ -1,4 +1,4 @@
-export type HttpHeaders = Record<string, string | undefined>
+import { HttpHeaders } from '@types';
 
 export interface DownloadChunkResponse {
     data: Blob;

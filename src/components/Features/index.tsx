@@ -1,7 +1,7 @@
 import { Box, Card, Typography } from '@mui/material';
 import { FEATURES, Feature } from '@constants';
 
-export default function Features(): JSX.Element {
+export default function Features() {
   return (
     <Box sx={{ textAlign: 'center', mb: 2 }}>
       <Typography

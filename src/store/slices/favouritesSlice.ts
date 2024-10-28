@@ -5,7 +5,7 @@ import { Song, FavouritesState } from '@interfaces';
 import { AppDispatch } from '@store/index';
 
 const initialState: FavouritesState = {
-  favouriteSongs: [],
+  songs: [],
   page: 1,
   totalPages: 1,
 };
@@ -43,30 +43,30 @@ export const favouritesSlice = createSlice({
       const song: Song = action.payload;
       const songId: number = song.id;
       const isAuthenticated: boolean = Boolean(localStorage.getItem('token'));
-      const isSongInFavourites: boolean = state.favouriteSongs.some((favSong: Song) => favSong.id === songId);
+      const isSongInFavourites: boolean = state.songs.some((favSong: Song) => favSong.id === songId);
 
       if (isSongInFavourites) {
-        state.favouriteSongs = state.favouriteSongs.filter((favSong: Song) => favSong.id !== songId);
+        state.songs = state.songs.filter((favSong: Song) => favSong.id !== songId);
 
         if (isAuthenticated) {
           removeFavourite(songId);
         }
       } else {
-        state.favouriteSongs.push(song);
+        state.songs.push(song);
 
         if (isAuthenticated) {
           addFavourite(songId);
         }
       }
 
-      state.totalPages = Math.ceil(state.favouriteSongs.length / SONGS_PER_PAGE);
+      state.totalPages = Math.ceil(state.songs.length / SONGS_PER_PAGE);
       if (state.page > state.totalPages) state.page -= 1;
-      saveFavSongsToLocaleStorage(state.favouriteSongs);
+      saveFavSongsToLocaleStorage(state.songs);
     },
 
     loadFavouritesSuccess: (state: FavouritesState, action: PayloadAction<Song[]>): void => {
-      state.favouriteSongs = action.payload;
-      saveFavSongsToLocaleStorage(state.favouriteSongs);
+      state.songs = action.payload;
+      saveFavSongsToLocaleStorage(state.songs);
     },
 
     setFavouritesPage: (state: FavouritesState, action: PayloadAction<number>): void => {

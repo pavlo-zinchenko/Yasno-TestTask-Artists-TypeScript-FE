@@ -1,6 +1,7 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { ThemeModeEnum } from '@enums';
 
-export default function getTheme(mode) {
+export default function getTheme(mode: ThemeModeEnum.LIGHT | ThemeModeEnum.DARK): Theme {
   return createTheme({
     palette: {
       mode: mode,
@@ -13,8 +14,8 @@ export default function getTheme(mode) {
         contrastText: '#fff',
       },
       background: {
-        default: mode === 'light' ? '#f5f5f5' : '#121212',
-        paper: mode === 'light' ? '#ffffff' : '#1e1e1e',
+        default: mode === ThemeModeEnum.LIGHT ? '#f5f5f5' : '#121212',
+        paper: mode === ThemeModeEnum.LIGHT ? '#ffffff' : '#1e1e1e',
       },
     },
     typography: {

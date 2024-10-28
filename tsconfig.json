@@ -53,6 +53,9 @@
       "@slices/*": [
         "src/store/slices/*"
       ],
+      "@types": [
+        "src/types/index.ts"
+      ],
       "@utils/*": [
         "src/utils/*"
       ],

@@ -10,7 +10,7 @@ export default function Pagination({
   totalPages,
   page,
   onPageChange,
-}: PaginationProps): JSX.Element {
+}: PaginationProps) {
   return (
     <Box sx={{ mt: 3, mb: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PaginationUI

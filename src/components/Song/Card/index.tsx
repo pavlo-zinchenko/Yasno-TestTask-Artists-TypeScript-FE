@@ -6,18 +6,19 @@ import Container from './Container';
 import Cover from './Cover';
 import Details from './Details';
 import { baseURL } from '@constants';
+import { SongCardProps } from '@interfaces';
 
-export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId }) {
+export default function SongCard({ song: originalSong, currentSongId, setCurrentSongId }: SongCardProps) {
   const song = {
     ...originalSong,
     url: `${baseURL}/uploads/songs/${originalSong.name}.mp3`,
   };
   const coverUrl = song.cover ? `${baseURL}/uploads/covers/${song.name}.png` : '/default.png';
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const audioRef = useRef<AudioPlayer>(null);
 
   useEffect(() => {
-    if (currentSongId !== song.id && isPlaying) {
+    if (currentSongId !== song.id && isPlaying && audioRef.current?.audio?.current) {
       audioRef.current.audio.current.pause();
       setIsPlaying(false);
     }
@@ -25,6 +26,7 @@ export default function SongCard({ song: originalSong, currentSongId, setCurrent
 
   const handlePlay = () => {
     setIsPlaying(true);
+    setCurrentSongId(song.id);
   };
 
   const handlePause = () => {

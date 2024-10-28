@@ -1,8 +1,5 @@
-import { Song } from '@interfaces';
+import { FavouritesState } from '@interfaces';
 
-export interface SongsState {
-    songs: Song[];
-    page: number;
-    totalPages: number;
+export interface SongsState extends FavouritesState {
     loading: boolean;
 }

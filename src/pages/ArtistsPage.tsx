@@ -4,10 +4,12 @@ import { Box, Typography } from '@mui/material';
 import ArtistCard from '@components/ArtistCard/index';
 import { fetchArtists } from '@slices/artistsSlice';
 import Progress from '@common/Progress';
+import { RootState, AppDispatch } from '@store/index';
+import { Artist } from '@interfaces';
 
 export default function ArtistsPage() {
-  const dispatch = useDispatch();
-  const { artists, loading } = useSelector((state) => state.artists);
+  const dispatch: AppDispatch = useDispatch();
+  const { artists, loading } = useSelector((state: RootState) => state.artists);
 
   useEffect(() => {
     dispatch(fetchArtists());
@@ -36,7 +38,7 @@ export default function ArtistsPage() {
           flexWrap: 'wrap',
         }}
       >
-        {artists.map(artist => (
+        {artists.map((artist: Artist) => (
           <ArtistCard
             key={artist.id}
             artist={artist}

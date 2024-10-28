@@ -1,10 +1,11 @@
 import { IconButton } from '@mui/material';
 import { Download as DownloadUI } from '@mui/icons-material';
 import { downloadFile } from '@services/DownloadService';
+import { ExtendedSongProps } from '@interfaces';
 
-export default function Download({ url, name, artist_id }) {
+export default function Download({ song }: ExtendedSongProps) {
   const handleDownload = () => {
-    downloadFile(url, name, artist_id);
+    downloadFile(song.url, song.name, song.artist_id);
   };
 
   return (

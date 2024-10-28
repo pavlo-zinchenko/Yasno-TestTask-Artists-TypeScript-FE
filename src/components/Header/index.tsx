@@ -3,71 +3,52 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Typography, IconButton, Button, Badge } from '@mui/material';
 import { ArrowBack, Brightness4, Brightness7, Favorite } from '@mui/icons-material';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, Theme } from '@mui/material/styles';
 import { toggleTheme } from '@slices/themeSlice';
 import { RootState } from '@store/index';
+import { Dispatch } from 'redux';
+import { Routes, RouteTitles } from '@enums';
+
+const isDynamicArtistRoute = (pathname: string): boolean => /^\/artists\/\d+$/.test(pathname);
 
 export default function Header() {
   const [headerTitle, setHeaderTitle] = useState<string>('Music App');
   const [isReturnButton, setIsReturnButton] = useState<boolean>(false);
-  const theme = useTheme();
-  const dispatch = useDispatch();
+
+  const theme: Theme = useTheme();
+  const dispatch: Dispatch<any> = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const favoriteCount = useSelector((state: RootState) => state.favourites?.favouriteSongs?.length);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, [location.pathname]);
+  const favoriteCount: number = useSelector((state: RootState) => state.favourites?.songs?.length || 0);
+  const isAuthenticated: boolean = !!localStorage.getItem('token');
 
   useEffect(() => {
     const { pathname } = location;
     let title = 'Music App';
 
-    switch (pathname) {
-      case '/login':
-        setIsReturnButton(false);
-        title = 'Sign In';
-        break;
-      case '/register':
-        setIsReturnButton(false);
-        title = 'Sign Up';
-        break;
-      case '/artists':
-        setIsReturnButton(false);
-        title = 'Artists';
-        break;
-      case '/favourites':
-        setIsReturnButton(true);
-        title = 'Favourites';
-        break;
-      case /^\/artists\/\d+$/.test(pathname):
-        setIsReturnButton(true);
-        title = `Artist`;
-        break;
-      default:
-        setIsReturnButton(false);
-        title = 'Music App';
-        break;
+    if (pathname in RouteTitles) {
+      title = RouteTitles[pathname as Routes];
+      setIsReturnButton(pathname === Routes.Favourites);
+    } else if (isDynamicArtistRoute(pathname)) {
+      title = 'Artist';
+      setIsReturnButton(true);
+    } else {
+      setIsReturnButton(false);
+      title = 'Music App';
     }
 
     setHeaderTitle(title);
     document.title = title;
   }, [location.pathname]);
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     localStorage.removeItem('token');
-    setIsAuthenticated(false);
     window.location.href = '/';
   };
 
-  const navigateTo = (url: string) => {
-    if (location.pathname === url) {
-      navigate(url, { replace: true });
-    } else {
+  const navigateTo = (url: Routes): void => {
+    if (location.pathname !== url) {
       navigate(url);
     }
   };
@@ -96,14 +77,14 @@ export default function Header() {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton onClick={() => navigateTo('/favourites')} sx={{ color: 'white', ml: 1, mr: 1 }}>
+        <IconButton onClick={() => navigateTo(Routes.Favourites)} sx={{ color: 'white', ml: 1, mr: 1 }}>
           <Badge badgeContent={favoriteCount} color="error">
             <Favorite />
           </Badge>
         </IconButton>
 
         <IconButton
-          sx={{ color: 'white', ml: 1, mr: 1 }} 
+          sx={{ color: 'white', ml: 1, mr: 1 }}
           aria-label="toggle theme"
           onClick={() => dispatch(toggleTheme())}
         >
@@ -112,10 +93,10 @@ export default function Header() {
 
         {!isAuthenticated ? (
           <>
-            <Button color="inherit" onClick={() => navigateTo('/login')}>
+            <Button color="inherit" onClick={() => navigateTo(Routes.Login)}>
               Sign In
             </Button>
-            <Button color="inherit" onClick={() => navigateTo('/register')}>
+            <Button color="inherit" onClick={() => navigateTo(Routes.Register)}>
               Sign Up
             </Button>
           </>

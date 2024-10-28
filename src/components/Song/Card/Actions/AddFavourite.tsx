@@ -2,10 +2,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IconButton } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { toggleFavourite } from '@slices/favouritesSlice';
+import { RootState, AppDispatch } from '@store/index';
+import { ExtendedSongProps } from '@interfaces';
 
-export default function AddFavourite({ song }) {
-  const dispatch = useDispatch();
-  const isFavorited = useSelector((state) => state.favourites.favouriteSongs.map((favSong) => favSong.id).includes(song.id));
+export default function AddFavourite({ song }: ExtendedSongProps) {
+  const dispatch: AppDispatch = useDispatch();
+  const isFavorited = useSelector((state: RootState) =>
+    state.favourites.songs.map((favSong) => favSong.id).includes(song.id)
+  );
 
   function handleFavourite() {
     dispatch(toggleFavourite(song));
@@ -21,14 +25,16 @@ export default function AddFavourite({ song }) {
         '&:hover': { color: 'error.light' },
       }}
     >
-      {isFavorited ?
-        <Favorite sx={{
-          fontSize: '2rem',
-          backgroundColor: 'background.paper',
-          borderRadius: '7px 0 0',
-          padding: '6px 2px 2px 6px',
-        }}
-        /> :
+      {isFavorited ? (
+        <Favorite
+          sx={{
+            fontSize: '2rem',
+            backgroundColor: 'background.paper',
+            borderRadius: '7px 0 0',
+            padding: '6px 2px 2px 6px',
+          }}
+        />
+      ) : (
         <FavoriteBorder
           sx={{
             fontSize: '2rem',
@@ -37,7 +43,7 @@ export default function AddFavourite({ song }) {
             padding: '6px 2px 2px 6px',
           }}
         />
-      }
+      )}
     </IconButton>
   );
 }

@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { fetchArtists } from '@slices/artistsSlice';
 import ScrollableLine from './ScrollableLine';
+import { AppDispatch, RootState } from '@store/index';
 
 export default function ArtistsCarousel() {
-  const dispatch = useDispatch();
-  const { loading, artists } = useSelector((state) => state.artists);
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, artists } = useSelector((state: RootState) => state.artists);
 
   useEffect(() => {
     if (!artists.length) {

@@ -12,10 +12,11 @@ import LoginPage from '@pages/LoginPage';
 import NotFoundPage from '@pages/NotFoundPage';
 import RegistrationPage from '@pages/RegistrationPage';
 import { loadFavourites } from '@store/slices/favouritesSlice';
+import { AppDispatch } from '@store/index';
 
 export default function App() {
-  const dispatch = useDispatch();
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const dispatch = useDispatch<AppDispatch>();
+  const isAuthenticated: boolean = Boolean(localStorage.getItem('token'));
 
   useEffect(() => {
     loadFavourites(isAuthenticated, dispatch);
