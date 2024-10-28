@@ -5,7 +5,7 @@ import ArtistCard from '@components/ArtistCard/index';
 import { fetchArtists } from '@slices/artistsSlice';
 import Progress from '@common/Progress';
 import { RootState, AppDispatch } from '@store/index';
-import { Artist } from '@interfaces';
+import { ArtistCardData } from '@interfaces';
 
 export default function ArtistsPage() {
   const dispatch: AppDispatch = useDispatch();
@@ -38,7 +38,7 @@ export default function ArtistsPage() {
           flexWrap: 'wrap',
         }}
       >
-        {artists.map((artist: Artist) => (
+        {artists.map((artist: ArtistCardData) => (
           <ArtistCard
             key={artist.id}
             artist={artist}

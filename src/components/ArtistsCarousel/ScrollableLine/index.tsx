@@ -1,18 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, CardMedia } from '@mui/material';
 import CustomCard from '@common/CustomCard';
 import { baseURL } from '@constants';
 import { RootState } from '@store/index';
-import { Artist } from '@interfaces';
+import { ArtistCardData } from '@interfaces';
 
 const baseAvatarUrl = `${baseURL}/uploads/avatars/`;
 
 export default function ScrollableLine() {
   const lineRef = useRef<HTMLDivElement | null>(null);
-  const artists = useSelector((state: RootState) => state.artists.artists);
+  const artists: ArtistCardData[] = useSelector((state: RootState) => state.artists.artists);
   const navigate = useNavigate();
+  const [scrolling, setScrolling] = useState<boolean>(true);
 
   useEffect(() => {
     if (!artists.length) return;
@@ -20,7 +21,7 @@ export default function ScrollableLine() {
     let animationFrameId: number;
 
     const smoothScroll = () => {
-      if (lineRef.current && artists.length > 1) {
+      if (scrolling && lineRef.current && artists.length > 1) {
         lineRef.current.scrollLeft += 1;
 
         const firstChild = lineRef.current.firstChild as HTMLDivElement;
@@ -32,18 +33,19 @@ export default function ScrollableLine() {
           lineRef.current.appendChild(firstChild);
         }
       }
-
       animationFrameId = requestAnimationFrame(smoothScroll);
     };
 
     animationFrameId = requestAnimationFrame(smoothScroll);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [artists.length]);
+  }, [artists.length, scrolling]);
 
   return (
     <Box
       ref={lineRef}
+      onMouseEnter={() => setScrolling(false)}
+      onMouseLeave={() => setScrolling(true)}
       sx={{
         display: 'flex',
         overflowX: 'hidden',
@@ -55,9 +57,9 @@ export default function ScrollableLine() {
         maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
       }}
     >
-      {artists.map((artist: Artist, index: number) => (
+      {artists.map((artist: ArtistCardData) => (
         <CustomCard
-          key={`${artist.id}-${index}`}
+          key={artist.id}
           onClick={() => navigate(`/artists/${artist.id}`)}
           sx={{
             width: '150px',

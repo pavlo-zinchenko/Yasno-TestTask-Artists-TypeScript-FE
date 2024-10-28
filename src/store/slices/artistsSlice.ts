@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getArtists, getArtist } from '@services/ArtistService';
 import { notifyError } from '@utils/ToastNotifications';
-import { Artist, ArtistsState } from '@interfaces';
+import { Artist, ArtistCardData, ArtistCardInfo, ArtistsState } from '@interfaces';
 import { AppDispatch, RootState } from '@store/index';
 
 const initialState: ArtistsState = {
@@ -21,7 +21,7 @@ export const artistsSlice = createSlice({
       state.selectedArtist = action.payload;
       state.loading = false;
     },
-    setArtists: (state, action: PayloadAction<Artist[]>) => {
+    setArtists: (state, action: PayloadAction<ArtistCardData[]>) => {
       state.artists = action.payload;
       state.loading = false;
     },
@@ -44,14 +44,14 @@ export const {
 
 export const fetchArtists = () => async (dispatch: AppDispatch, getState: () => RootState) => {
   const artistsSlice: ArtistsState = getState().artists;
-  const artists: Artist[] = artistsSlice.artists;
+  const artists: ArtistCardData[] = artistsSlice.artists;
 
   if (artists.length > 0) return;
 
   dispatch(setLoading());
 
   try {
-    const response: Artist[] = await getArtists();
+    const response: ArtistCardData[] = await getArtists();
     dispatch(setArtists(response));
   } catch (error) {
     notifyError('Failed to load artists');

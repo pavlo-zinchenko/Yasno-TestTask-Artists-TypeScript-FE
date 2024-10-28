@@ -1,7 +1,7 @@
-import { Artist } from '@interfaces';
+import { Artist, ArtistCardData } from '@interfaces';
 
 export interface ArtistsState {
-    artists: Artist[];
+    artists: ArtistCardData[];
     selectedArtist: Artist | null;
     loading: boolean;
 }

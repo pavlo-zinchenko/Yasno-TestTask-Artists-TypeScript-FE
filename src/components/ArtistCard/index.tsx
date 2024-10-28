@@ -3,9 +3,11 @@ import { useDispatch } from 'react-redux';
 import { setArtist } from '@slices/artistsSlice';
 import { useNavigate } from 'react-router-dom';
 import { baseURL } from '@constants';
+import { ArtistCardInfo } from '@interfaces';
+import { AppDispatch } from '@store/index';
 
-export default function ArtistCard({ artist }) {
-  const dispatch = useDispatch();
+export default function ArtistCard({ artist }: ArtistCardInfo) {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -42,9 +44,11 @@ export default function ArtistCard({ artist }) {
           {artist.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-        Content time: {artist.total_duration || '00:00'}<br />
-        You liked songs: {artist.liked_count}<br />
-        {artist.songs_count === 1 ? 'Song' : 'Songs'}: {artist.songs_count}
+          Content time: {artist.total_duration || '00:00'}
+          <br />
+          You liked songs: {artist.liked_count}
+          <br />
+          {artist.songs_count === 1 ? 'Song' : 'Songs'}: {artist.songs_count}
         </Typography>
       </CardContent>
     </Card>
